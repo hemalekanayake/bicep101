@@ -1,19 +1,29 @@
-on: [push]
+on:
+  push:
+    branches:
+      - adf_publish
+  workflow_dispatch:
 
-name: AzureLoginSample
 
 jobs:
-
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+    name: 'This deploys to SIT environment'
     steps:
-    
-    - uses: azure/login@v1.4.3
+    - uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: Azure/login@v1.4.3
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
-        allow-no-subscriptions: true
-    - run: |
-        az webapp l
-          az --version
-   
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/data-factory-deploy-action@v1.2.0
+      with:
+        resourceGroupName: ${{secrets.AZURE_SIT_RG}}
+        dataFactoryName: goa-goadmp-sit-hasitha-env-wlic-df
+        armTemplateFile: ./goa-goadmp-dev-env-wlic-df/ARMTemplateForFactory.json
+        armTemplateParametersFile: ./goa-goadmp-dev-env-wlic-df/ARMTemplateParametersForFactory.json
+        # additionalParameters: 'key1=value key2=value keyN=value' [optional]
+        # skipAzModuleInstallation: true [optional]
