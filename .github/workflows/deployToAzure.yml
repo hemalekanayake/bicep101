@@ -34,7 +34,7 @@ jobs:
         enable-AzPSSession: true
         # Name of the environment. Supported values are azurecloud, azurestack, azureusgovernment, azurechinacloud, azuregermancloud. Default being azurecloud
     - name: 'Run az commands'
-            run: |
+      run: |
               az account show
               az group list
               pwd 
