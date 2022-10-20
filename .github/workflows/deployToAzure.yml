@@ -11,6 +11,5 @@ jobs:
     - uses: azure/login@v1.4.5
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - run: |
-        az webapp list --query "[?state=='Running']"
+        enable-AzPSSession: true
+   
