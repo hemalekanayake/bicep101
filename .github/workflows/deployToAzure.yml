@@ -13,4 +13,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
         allow-no-subscriptions: true
+    - run: |
+        az webapp l
+          az --version
    
