@@ -1,14 +1,17 @@
 on:
   push:
-    branches:
-      - adf_publish
-  workflow_dispatch:
+   branches: ["main"]
+ pull_request:
+  branches: ["main"]
+
+ workflow_dispatch:
+
 
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    name: 'This deploys to SIT environment'
+    name: 'Dev_Bicep_Deployment'
     steps:
     - uses: actions/checkout@v3
 
