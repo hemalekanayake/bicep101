@@ -1,12 +1,6 @@
-@maxLength(11)
-param storageAccountPrefix string = 'bicep'
-param location string = resourceGroup().location
-
-// var str = '${storageAccountPrefix}${uniqueString(subscription().id)}'
-
-resource storageaccount 'Microsoft.storage/storageAccounts@2021-02-01' = {
+resource symbolicname 'Microsoft.Storage/storageAccounts@2021-02-01' = {
     name: sta
-    location: location
+    location: canadacentral
     kind: 'StorageV2'
     sku:{
         name: 'Standard_LRS'
