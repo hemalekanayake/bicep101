@@ -1,4 +1,4 @@
-@maxLenth(11)
+@maxLength(11)
 param storageAccountPrefix string = 'bicep'
 param location string = resourceGroup().location
 
