@@ -1,8 +1,10 @@
-resource symbolicname 'Microsoft.Storage/storageAccounts@2021-02-01' = {
-    name: sta
-    location: canadacentral
-    kind: 'StorageV2'
-    sku:{
-        name: 'Standard_LRS'
-    }
+resource storage 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: 'bicepstoragedeploy342'
+  sku: {
+    name: 'Standard_LRS'
+  
+  }
+  kind: 'StorageV2'
+  location: 'canadacentral'
+
 }
