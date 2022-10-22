@@ -4,7 +4,10 @@ on:
  pull_request:
   branches: ["main"]
 
- workflow_dispatch:
+ workflow_dispatch: 
+env: 
+ resourceGroupName: bicepdeploy
+
 
 
 
@@ -27,7 +30,7 @@ jobs:
       uses: Azure/powershell@v1
       with:
         # Specify the Az PowerShell script here.
-        inlineScript: New-AzResourceGroup -Name bicepdeploy -Location canadacentral -Force
+        inlineScript: New-AzResourceGroup -Name ${{ env.resourceGroupName }} -Location canadacentral -Force
         # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
         azPSVersion: latest
         # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
@@ -38,7 +41,7 @@ jobs:
         # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
         scope: resourcegroup
         # Provide the name of a resource group, only required for resource Group deployments.
-        resourceGroupName: 'bicepdeploy'
+        resourceGroupName: ${{ env.resourceGroupName }}
         # Specify the path or URL to the Azure Resource Manager template.
         template: main.bicep
         # Supply deployment parameter values.
