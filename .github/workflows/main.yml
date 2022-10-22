@@ -48,7 +48,7 @@ jobs:
         # Provide the name of a resource group, only required for resource Group deployments.
         resourceGroupName: bicepdeploy
         # Specify the path or URL to the Azure Resource Manager template.
-        template: main01.jason
+        template: main01.json
         # Supply deployment parameter values.
         #parameters: storageAccountPrefix=githubaction
         deploymentName: "github${{github.run_id}}"
