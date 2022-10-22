@@ -1,5 +1,5 @@
 
- param location string = 'canadacentral'
+param location string = 'canadacentral'
 resource storage 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: 'bicepstoragedeploy342'
   sku: {
