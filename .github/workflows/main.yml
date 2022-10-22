@@ -34,7 +34,7 @@ jobs:
         # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
      
     - name: Build hte bicep file into ARM - Azure CLI Action
-      uses: Azure/cli@v1
+      uses: Azure/cli@v1.0.6
       with:
        # Specify the script here
         inlineScript: az bicep build --file main.bicep --outfile ./main01.json
