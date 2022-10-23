@@ -39,6 +39,15 @@ jobs:
        # Specify the script here
         inlineScript: az bicep build --file main.bicep --outfile ./main01.json
         
+    - name: Perform What-IF Test - Azure PowerShell Action
+      uses: Azure/powershell@v1
+      with:
+       # Specify the Az PowerShell script here.
+       inlineScript: New-AzResourceGroupDeployment -ResourceGroupName ${{ env.resourceGroupName }} -TemplateFile main.bicep -WhatIf
+       # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
+       azPSVersion: latest
+       # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
+     
      
     - name: Deploy Azure Resource Manager (ARM) Template
       uses: Azure/arm-deploy@v1.0.8
