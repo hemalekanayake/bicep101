@@ -1,0 +1,63 @@
+on:
+ push:
+   branches: ["main"]
+ pull_request:
+  branches: ["main"]
+
+ workflow_dispatch: 
+env: 
+ resourceGroupName: bicepdeploy
+ location: canadacentral
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: 'Dev_Bicep_Deployment'
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: Azure/login@v1.4.3
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        
+        enable-AzPSSession: true
+        # Name of the environment. Supported values are azurecloud, azurestack, azureusgovernment, azurechinacloud, azuregermancloud. Default being azurecloud
+    - name: Azure PowerShell Action
+      uses: Azure/powershell@v1
+      with:
+        # Specify the Az PowerShell script here.
+        inlineScript: New-AzResourceGroup -Name bicepdeploy -Location ${{env.location}} -Force
+        # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
+        azPSVersion: latest
+        # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
+     
+    - name: Build hte bicep file into ARM - Azure CLI Action
+      uses: Azure/cli@v1.0.6
+      with:
+       # Specify the script here
+        inlineScript: az bicep build --file main.bicep --outfile ./main01.json
+        
+    - name: Perform What-IF Test - Azure PowerShell Action
+      uses: Azure/powershell@v1
+      with:
+       # Specify the Az PowerShell script here.
+       inlineScript: New-AzResourceGroupDeployment -ResourceGroupName ${{ env.resourceGroupName }} -TemplateFile main.bicep -WhatIf
+       # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
+       azPSVersion: latest
+       # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
+     
+     
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/arm-deploy@v1.0.8
+      with:
+        # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
+        scope: resourcegroup
+        # Provide the name of a resource group, only required for resource Group deployments.
+        resourceGroupName: bicepdeploy
+        # Specify the path or URL to the Azure Resource Manager template.
+        template: main01.json
+        # Supply deployment parameter values.
+        #parameters: storageAccountPrefix=githubaction
+        deploymentName: "github${{github.run_id}}"
