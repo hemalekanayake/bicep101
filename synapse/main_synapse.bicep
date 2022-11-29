@@ -1,3 +1,4 @@
+param location string = 'canadacentral'
 resource symbolicname 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: 'string'
   location: 'string'
