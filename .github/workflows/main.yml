@@ -33,11 +33,12 @@ jobs:
         azPSVersion: latest
         # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
      
-    - name: Build the bicep file into ARM - Azure CLI Action
+    - name: Build the bicep deploy - Azure CLI Action
       uses: Azure/cli@v1.0.6
       with:
        # Specify the script here
-        inlineScript: az bicep build --file ./synapse/main_synapse.bicep --outfile ./synapse/main_synapse.json
+        inlineScript: az deployment group create --resource-group bicepdeploy --template-file ./synapse/main_synapse.bicep --parameters sqlAdministratorLogin=synapseadmin databasesName=synapsedb capacity=900
+        # az bicep build --file ./synapse/main_synapse.bicep --outfile ./synapse/main_synapse.json
         
     # - name: Perform What-IF Test - Azure PowerShell Action
     #   uses: Azure/powershell@v1
@@ -49,15 +50,15 @@ jobs:
     #    # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
      
      
-    - name: Deploy Azure Resource Manager (ARM) Template
-      uses: Azure/arm-deploy@v1.0.8
-      with:
-        # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
-        scope: resourcegroup
-        # Provide the name of a resource group, only required for resource Group deployments.
-        resourceGroupName: bicepdeploy
-        # Specify the path or URL to the Azure Resource Manager template.
-        template: ./synapse/main_synapse.json
-        # Supply deployment parameter values.
-        #parameters: storageAccountPrefix=githubaction
-        deploymentName: "github${{github.run_id}}"
+    # - name: Deploy Azure Resource Manager (ARM) Template
+    #   uses: Azure/arm-deploy@v1.0.8
+    #   with:
+    #     # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
+    #     scope: resourcegroup
+    #     # Provide the name of a resource group, only required for resource Group deployments.
+    #     resourceGroupName: bicepdeploy
+    #     # Specify the path or URL to the Azure Resource Manager template.
+    #     template: ./synapse/main_synapse.json
+    #     # Supply deployment parameter values.
+    #     #parameters: storageAccountPrefix=githubaction
+    #     deploymentName: "github${{github.run_id}}"
