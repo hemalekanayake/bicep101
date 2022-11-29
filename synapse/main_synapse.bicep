@@ -1,4 +1,5 @@
-param location string = 'canadacentral'
+@description('Resourcegroup')
+param location string = bicepdeploy
 
 @description('The SQL Logical Server name.')
 param sqlServerName string = 'sql${uniqueString(resourceGroup().id)}'
